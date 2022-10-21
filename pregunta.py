@@ -15,28 +15,31 @@ import re
 
 def ingest_data():
 
-    with open('clusters_report.txt') as file:
-        data = [line for line in file.readlines()]
+    #
+    # Inserte su código aquí
+    #
+    with open('clusters_report.txt') as f:
+        data = [line for line in f.readlines()]
     data = data[4:]
     data = [line.replace('\n', '') for line in data]
     data = [line.strip() for line in data]
-
     lista = []
+    
     cadena = ''
-    i = 0
-    while i < len(data):
-        if data[i] != '':
-            cadena += ' ' + data[i]
+    index = 0
+    while index < len(data):
+        if data[index] != '':
+            cadena += ' ' + data[index]
         else:
             lista.append(cadena)
             cadena = ''
-        i +=1
+        index +=1
 
     lista = [line.strip() for line in lista]
 
     info = []
-    for i in lista:
-        regular = re.search(r'(^[0-9]+)\W+([0-9]+)\W+([0-9]+)([!#$%&*+-.^_`|~:\[\]]+)(\d+)(\W+)(.+)', i)
+    for index in lista:
+        regular = re.search(r'(^[0-9]+)\W+([0-9]+)\W+([0-9]+)([!#$%&*+-.^_`|~:\[\]]+)(\d+)(\W+)(.+)', index)
         linea = regular.group(1) + '*' + regular.group(2) + '*' + regular.group(3) + '.' + regular.group(5) + '*' + regular.group(7)
         info.append(linea)
     datos = [line.split('*') for line in info]
@@ -50,10 +53,10 @@ def ingest_data():
     principales_palabras_clave = [[element.strip() for element in line] for line in principales_palabras_clave]
     principales_palabras_clave = [', '.join(line) for line in principales_palabras_clave]
 
-    j = 0
-    while j < 3:
-        df[list(df.columns)[i]] = [element[i] for element in datos]
-        j +=1
+    index = 0
+    while index < 3:
+        df[list(df.columns)[index]] = [element[index] for element in datos]
+        index +=1
     df.principales_palabras_clave = principales_palabras_clave
     df.cluster = df.cluster.astype('int')
     df.cantidad_de_palabras_clave = df.cantidad_de_palabras_clave.astype('int')
